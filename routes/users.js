@@ -43,9 +43,7 @@ router.delete("/:id", async (req, res) => {
         res.status(200).json("Compte supprimé")
     }
     else 
-    {
         return res.status(403).json("Tu peux mettre à jour uniquement ton compte ")
-    }
 })
 /*--------------------------------------------*/
 
@@ -61,7 +59,33 @@ router.get("/:id", async (req, res) => {
 })
 /*--------------------------------------------*/
 
-/*----------- SUIVRE A USER ------------*/
+/*----------- Follow A USER ------------*/
+router.put("/:id/follow", async (req, res) => {
+    if (req.body.userId !== req.params.id)
+    {
+        //.... On cherche l'utilisateur à follow dans la BDD.
+        const user = await User.findById(req.params.id)
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+        const currentUser = await User.findById(req.body.userId)
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+        if (!user.followers.includes(req.body.userId))
+        {
+            await user.updateOne({$push: { followers: req.body.userId }})
+            await currentUser.updateOne({ $push: { following: req.params.id }})
+            res.status(200).json("On t'a vu, tu l'as suivi!")
+        }
+        else
+        {
+            res.status(403).json("On sait que tu le kiffes trop mais tu le suis déjà!")
+        }
+    }
+    else
+        return res.status(403).json("On sait que tu te kiffes mais tu ne peux pas te follow par toi-même")
+})
 /*--------------------------------------------*/
 
 /*----------- UNFOLLOW ------------*/
