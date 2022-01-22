@@ -11,9 +11,12 @@ const authRoute = require("./routes/auth");
 dotenv.config();
 
 // Mongoose sert à modéliser des données. It acts as an intermediate between mongodb and server side language(like NodeJs). See this on stackoverflow : https://stackoverflow.com/questions/55604057 what-is-mongo-url-and-what-should-it-be-set-to
-mongoose.connect(process.env.MONGO_URL, {useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true}, ()=> {
-    console.log("Mongoose connecté.");
-});
+mongoose
+.connect(process.env.MONGO_URL, {
+    useNewUrlParser: true, 
+    useUnifiedTopology: true, })
+.then(()=> console.log("Db connected!"))
+.catch(err => console.log(err));
 
 // On va créer le middleware
     // app.use(express.json()) est un body parser pour les requêtes POST
