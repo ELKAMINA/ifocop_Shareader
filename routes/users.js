@@ -89,9 +89,31 @@ router.put("/:id/follow", async (req, res) => {
 /*--------------------------------------------*/
 
 /*----------- UNFOLLOW ------------*/
-/*--------------------------------------------*/
-router.get("/",(req,res) => {
-    res.send("Hey its user route");
+router.put("/:id/unfollow", async (req, res) => {
+    if (req.body.userId !== req.params.id)
+    {
+        //.... On cherche l'utilisateur à follow dans la BDD.
+        const user = await User.findById(req.params.id)
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+        const currentUser = await User.findById(req.body.userId)
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+        if (user.followers.includes(req.body.userId))
+        {
+            await user.updateOne({$pull: { followers: req.body.userId }})
+            await currentUser.updateOne({ $pull: { following: req.params.id }})
+            res.status(200).json("Ah ça sent la bagarre! Tu l'as bien unfollow en tout cas")
+        }
+        else
+        {
+            res.status(403).json("Tu ne suis pas cet utilisateur")
+        }
+    }
+    else
+        return res.status(403).json("On sait que tu ne t'aimes plus, mais tu ne peux malheureseument pas t'unfollower toi-même")
 })
-
+/*--------------------------------------------*/
 module.exports = router;
