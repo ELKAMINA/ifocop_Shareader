@@ -33,10 +33,10 @@ router.put("/:id", async (req, res) => {
 
 /*----------- SUPP USER ------------*/
 //... router.put, requête pour modifier/updater des informations
-router.put("/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
     if (req.body.userId === req.params.id)
     {
-        const user = await User.deleteOne(req.params.id)
+        const user = await User.findByIdAndDelete(req.params.id)
         .catch(err =>{
             return res.status(500).json(err)
         })
@@ -46,6 +46,18 @@ router.put("/:id", async (req, res) => {
     {
         return res.status(403).json("Tu peux mettre à jour uniquement ton compte ")
     }
+})
+/*--------------------------------------------*/
+
+/*----------- Get A USER ------------*/
+router.get("/:id", async (req, res) => {
+    const user = await User.findById(req.params.id)
+    //.... Si on veut filtrer le résultat de notre requête, on crée un objet avec toutes les propriétés que l'on ne veut pas.
+    .catch(err =>{
+        return res.status(500).json(err)
+    })
+    const {password, updatedAt, ...other} = user._doc
+    res.status(200).json(other)
 })
 /*--------------------------------------------*/
 
