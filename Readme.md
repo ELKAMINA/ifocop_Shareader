@@ -14,7 +14,7 @@
 
 ## Postman
 `https://identity.getpostman.com/signup?continue=https%3A%2F%2Fwww.postman.com%2F`
-`application pour faire des test sur des API. C'est un client HTTP qui teste des requêtes HTTP`
+`application pour faire des test sur des API. C'est un client HTTP qui teste des requêtes HTTP. Une alternative à POSTMAN : REST CLIENT : extension Visual code`
 
 ## bcrypt
 `Permet de crypter les mots de passe`
