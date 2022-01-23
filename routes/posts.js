@@ -76,6 +76,7 @@ router.put("/:id/like", async(req,res)=> {
     }
     else 
     {
+        //.... Si le même post est reliké => dislike
         await post.updateOne({$pull: {likes: req.body.userId}})
         .catch(err => {
             res.status(500).json(err)
@@ -84,7 +85,17 @@ router.put("/:id/like", async(req,res)=> {
     }
 })
 /*--------------------------------------------*/
+
 /*----------- get un post ------------*/
+router.get("/:id", async(req,res)=> {
+    //.... On récupère le post qui a le même id que notre requête
+    const post = await Post.findById(req.params.id)
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On le récupère
+    res.status(200).json(post)
+})
 /*--------------------------------------------*/
 /*----------- get les timeslines un post ------------*/
 /*--------------------------------------------*/
