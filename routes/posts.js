@@ -1,6 +1,7 @@
 const { model } = require("mongoose");
 const router = require("express").Router();
 const Post = require("../models/Post");
+const User = require("../models/User");
 
 /*----------- Créer un post ------------*/
 router.post("/", async(req,res)=> {
@@ -97,6 +98,34 @@ router.get("/:id", async(req,res)=> {
     res.status(200).json(post)
 })
 /*--------------------------------------------*/
-/*----------- get les timeslines un post ------------*/
+
+/*----------- get les timeslines  ------------*/
+router.get("/timeline/all", async(req,res)=> {
+    //.... On récupère tous les posts d'un utilisateur
+    //let postArr = []
+    //.... on identifie l'utilisateur
+    const currentUser = await User.findById(req.body.userId)
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On récupère tous les posts de l'utilisateur
+    const userPosts = await Post.find({ userId: currentUser._id })
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... Avec promise.all ne fait que attendre les promesses multiples
+    //.... Ici, comme on veut récupérer tous les post en parallèle et les traiter
+    //.... On récupère tous les posts de ceux que follow l'utilisateur
+    const friendPosts = await Promise.all(
+        currentUser.following.map((friendId) => {
+            return Post.find({ userId : friendId })
+        })
+    )
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On le récupère
+    res.json(userPosts.concat(...friendPosts))
+})
 /*--------------------------------------------*/
 module.exports = router;
