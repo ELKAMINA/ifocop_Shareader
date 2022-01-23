@@ -14,7 +14,27 @@ router.post("/", async(req,res)=> {
 /*--------------------------------------------*/
 
 /*----------- Supprimer un post ------------*/
+router.delete("/:id", async(req,res)=> {
+    //.... On récupère le post qui a le même id que notre requête
+    const post = await Post.findById(req.params.id)
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On vérifie que l'utilisateur associé est bien celui qui l'a posté
+    if (post.userId === req.body.userId)
+    {
+        //.... On supprime le post
+        await post.deleteOne({$set: req.body})
+        .catch(err => {
+            res.status(500).json(err)
+        })
+        res.status(200).json("Alors on assume pas ? Ton post a bien été supprimé")
+    }
+    else 
+        res.status(403).json("Tu peux supprimer uniquement que tes posts Coco ")
+})
 /*--------------------------------------------*/
+
 /*----------- MAJ un post ------------*/
 router.put("/:id", async(req,res)=> {
     //.... On récupère le post qui a le même id que notre requête
@@ -38,6 +58,31 @@ router.put("/:id", async(req,res)=> {
 /*--------------------------------------------*/
 
 /*----------- Liker un post ------------*/
+router.put("/:id/like", async(req,res)=> {
+    //.... On récupère le post qui a le même id que notre requête
+    const post = await Post.findById(req.params.id)
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On vérifie si le post n'a pas été liké par l'utilisateur
+    if (!post.likes.includes(req.body.userId))
+    {
+        //.... On modifie le post
+        await post.updateOne({$push: {likes: req.body.userId}})
+        .catch(err => {
+            res.status(500).json(err)
+        })
+        res.status(200).json("Tu as liké")
+    }
+    else 
+    {
+        await post.updateOne({$pull: {likes: req.body.userId}})
+        .catch(err => {
+            res.status(500).json(err)
+        })
+        res.status(200).json("Tu as supprimé ton like")
+    }
+})
 /*--------------------------------------------*/
 /*----------- get un post ------------*/
 /*--------------------------------------------*/
