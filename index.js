@@ -10,6 +10,7 @@ const User = require("./models/User")
 const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const bcrypt = require("bcrypt");
+const path = require('path')
 // const bodyParser = require('body-parser');
 // var favicon = require('serve-favicon');
 // app.use(favicon(path.join(__dirname, 'public/', 'favicon.ico')));
