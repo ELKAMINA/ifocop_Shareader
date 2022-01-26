@@ -33,7 +33,7 @@ mongoose
     //.... The app.use() function is used to mount the specified middleware function(s) at the path which is being specified. It is mostly used to set up middleware for your application.
     //.... app.use(express.json()) est un body parser pour les requêtes POST
 app.use(express.json());
-app.use(cookieParser());
+// app.use(cookieParser());
 app.use(helmet());
 app.use(morgan("common"));
 // app.use(session({
