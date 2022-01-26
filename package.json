@@ -2,9 +2,9 @@
   "name": "node-rest-api",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "node index.js",
     "heroku-postbuild": "cd 02_client_side && npm install && npm run build"
   },
   "author": "",
