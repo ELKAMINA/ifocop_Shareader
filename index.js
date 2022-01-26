@@ -47,10 +47,10 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 /*--------------------------------------------*/
-app.use(express.static(path.join(__dirname, "/02_client_side/public/build")));
+app.use(express.static(path.join(__dirname, "/02_client_side/build")));
 
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/02_client_side/public/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '/02_client_side/build', 'index.html'));
 });
 
 
