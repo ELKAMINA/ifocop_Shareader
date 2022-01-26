@@ -11,8 +11,8 @@ const authRoute = require("./routes/auth");
 const postRoute = require("./routes/posts");
 const bcrypt = require("bcrypt");
 // const bodyParser = require('body-parser');
-var favicon = require('serve-favicon');
-app.use(favicon(path.join(__dirname, 'public/', 'favicon.ico')));
+// var favicon = require('serve-favicon');
+// app.use(favicon(path.join(__dirname, 'public/', 'favicon.ico')));
 
 // dotenv.config() permet de configurer des adresses secrètes pour protéger les données.
 dotenv.config();
