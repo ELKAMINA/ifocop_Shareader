@@ -14,7 +14,7 @@ const bcrypt = require("bcrypt");
 
 
 // dotenv.config() permet de configurer des adresses secrètes pour protéger les données.
-require("dotenv").config();
+dotenv.config();
 
 // Enregistrer les sessions 
 // const session = require('express-session')
@@ -45,7 +45,11 @@ app.use("/api/users", userRoute);
 app.use("/api/auth", authRoute);
 app.use("/api/post", postRoute);
 /*--------------------------------------------*/
+app.use(express.static(path.join(__dirname, "/02_client_side/build")));
 
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/02_client_side/build', 'index.html'));
+});
 
 
 app.listen(process.env.PORT || 8800,()=>

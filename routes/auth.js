@@ -7,9 +7,7 @@ const bcrypt = require("bcrypt");
 /*----------- REGISTERING A USER ------------*/
 router.post("/register", async (req,res) => {
     userSession = req.session;
-    console.log(userSession);
     const check = await User.findOne({email: req.body.email})
-    console.log(check);
     if (check)
     {
         res.status(206).send("Email already exists")
