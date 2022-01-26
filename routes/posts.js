@@ -100,11 +100,11 @@ router.get("/:id", async(req,res)=> {
 /*--------------------------------------------*/
 
 /*----------- get les timeslines  ------------*/
-router.get("/timeline/all", async(req,res)=> {
+router.get("/timeline/:userId", async(req,res)=> {
     //.... On récupère tous les posts d'un utilisateur
     //let postArr = []
     //.... on identifie l'utilisateur
-    const currentUser = await User.findById(req.body.userId)
+    const currentUser = await User.findById(req.params.userId)
     .catch(err => {
         res.status(500).json(err)
     })
@@ -125,7 +125,25 @@ router.get("/timeline/all", async(req,res)=> {
         res.status(500).json(err)
     })
     //.... On le récupère
-    res.json(userPosts.concat(...friendPosts))
+    res.status(200).json(userPosts.concat(...friendPosts))
+})
+/*--------------------------------------------*/
+
+/*----------- get all user's posts  ------------*/
+router.get("/profile/:username", async(req,res)=> {
+    //.... On récupère tous les posts d'un utilisateur
+    //let postArr = []
+    //.... on identifie l'utilisateur
+    const user = await User.findOne({username : req.params.username})
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    const posts = await Post.find({userId: user._id})
+    .catch(err => {
+        res.status(500).json(err)
+    })
+    //.... On le récupère
+    res.status(200).json(posts)
 })
 /*--------------------------------------------*/
 module.exports = router;

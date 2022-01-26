@@ -1,6 +1,8 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const session = require('express-session')
+var userSession;
 
 /*----------- MAJ USER ------------*/
     //... router.put, requête pour modifier/updater des informations
@@ -48,12 +50,16 @@ router.delete("/:id", async (req, res) => {
 /*--------------------------------------------*/
 
 /*----------- Get A USER ------------*/
-router.get("/:id", async (req, res) => {
-    const user = await User.findById(req.params.id)
-    //.... Si on veut filtrer le résultat de notre requête, on crée un objet avec toutes les propriétés que l'on ne veut pas.
+router.get("/", async (req, res) => {
+    userSession = req.session;
+    console.log(userSession)
+    const userId = req.query.userId
+    const username = req.query.username
+    const user = userId ? await User.findById(userId) : await User.findOne({username : username})
     .catch(err =>{
         return res.status(500).json(err)
     })
+    //.... Si on veut filtrer le résultat de notre requête, on crée un objet avec toutes les propriétés que l'on ne veut pas.
     const {password, updatedAt, ...other} = user._doc
     res.status(200).json(other)
 })
@@ -85,6 +91,30 @@ router.put("/:id/follow", async (req, res) => {
     }
     else
         return res.status(403).json("On sait que tu te kiffes mais tu ne peux pas te follow par toi-même")
+})
+/*--------------------------------------------*/
+
+/*----------- Get friend------------*/
+router.get("/friends/:userId", async (req, res) => {
+        if(req.params.userId === undefined) {return}
+        const user = await User.findById(req.params.userId)
+        .catch(err =>{
+            return res.status(500).json(err)
+        })
+        const friends = await Promise.all(
+            user.following.map(friendId =>{
+                return User.findById(friendId)
+            }))
+            .catch(err =>{
+                return res.status(500).json(err)
+            })
+            let friendList = [];
+            friends.map((friend) =>{
+                const { _id, username, profilePicture} = friend;
+                console.log("FRIEND", friend)
+            friendList.push({ _id, username, profilePicture});
+        });
+        res.status(200).json(friendList)
 })
 /*--------------------------------------------*/
 

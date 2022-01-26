@@ -18,6 +18,19 @@
 
 ## bcrypt
 `Permet de crypter les mots de passe`
+## Material UI
+`Pour les icônes`
+
+## Axios 
+librairies JS pour faire des requetes HTTP a partir de node.js ou des reqtes XHR du client.
+https://www.tech-wiki.online/fr/axios.html
+## Timeago 
+Pour la gestion des dates de publications (et pour avoir, il a publié il ya 4 sec ...)
+## Context API : Pour les petits projets ou pas bcp de changement de state
+API permettant d'avoir accès aux états partout l'application et pas uniquement au levle en dessous de nous.
+On passe les props to entire pages of components.
+Explication : https://www.youtube.com/watch?v=pFHyZvVxce0&t=0s à partir de 37:57
+diff : avec reudx, on va créer un context state à la connexion d'un user que l'on va stocker et maj tt le temps et il pourra etre appelé par tous les comp et sous comp : IDEAL pour les gros projets
 
 # Organisation du code:
 ## Commentaires :
@@ -29,5 +42,8 @@
         /********************************/
    - Troisième niveau de commentaire : 
         //....`
-
+# Etapes pour la mise en place de l'application
+- Api : Server-side
+- Client side 
+- J'ai fetch 
 
