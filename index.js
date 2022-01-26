@@ -48,7 +48,7 @@ app.use("/api/post", postRoute);
 
 
 
-app.listen(process.env.PORT || 8800, () =>
+app.listen(process.env.PORT || 8800,()=>
 {
     console.log("Backend Server is on");
 }
