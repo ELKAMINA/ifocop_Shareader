@@ -14,7 +14,7 @@ const bodyParser = require('body-parser');
 
 
 // dotenv.config() permet de configurer des adresses secrètes pour protéger les données.
-dotenv.config();
+require("dotenv").config();
 
 // Enregistrer les sessions 
 const session = require('express-session')
